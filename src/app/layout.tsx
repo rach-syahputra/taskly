@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/toaster'
+import Navbar from '@/components/navbar'
 import { appTitle } from '@/constants/app'
 import './globals.css'
 
@@ -38,8 +39,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
-          <Toaster />
+          <div className='mx-auto max-w-[768px] px-4 font-geistSans'>
+            <Navbar />
+            {children}
+            <Toaster />
+          </div>
         </ThemeProvider>
       </body>
     </html>

@@ -1,7 +1,6 @@
 import { Metadata } from 'next'
 import Date from '../components/date'
 import TodoList from '../components/todo-list'
-import Navbar from '@/components/navbar'
 import { appTitle } from '@/constants/app'
 
 export const metadata: Metadata = {
@@ -11,8 +10,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className='mx-auto max-w-[768px] px-4 font-geistSans'>
-      <Navbar />
+    <main>
       <Date />
       <TodoList />
     </main>
