@@ -81,7 +81,7 @@ export default function AddTodoForm({
         <Button
           variant='outline'
           size='icon'
-          className='fixed bottom-5 right-5 flex h-14 w-14 gap-4 rounded-full p-0 lg:bottom-10 lg:right-10'
+          className='fixed bottom-5 right-5 flex h-14 w-14 gap-4 rounded-full p-0 lg:bottom-10 lg:right-10 lg:[&_svg]:size-6'
           type='button'
           onClick={() => setOnAdd(true)}
         >
