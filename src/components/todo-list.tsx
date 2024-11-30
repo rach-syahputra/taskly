@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import AddTodoForm from './add-todo-form'
 import TodoItem from './todo-item'
 import { getLocalStorage, setLocalStorage } from '@/hooks/local-storage'
-import { todos as todoList, todosKey } from '@/constants/todos'
+import { initialTodos, todosKey } from '@/constants/todos'
 
 export default function TodoList() {
   const [todos, setTodos] = useState<string[] | null>([])
@@ -17,8 +17,8 @@ export default function TodoList() {
       if (todosFromLocalStorage) {
         setTodos(todosFromLocalStorage)
       } else {
-        setTodos(todoList)
-        setLocalStorage(todosKey, todoList)
+        setTodos(initialTodos)
+        setLocalStorage(todosKey, initialTodos)
       }
     }
   }, [])
