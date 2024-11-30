@@ -1,1 +1,1 @@
-export const appTitle = 'Todoist'
+export const appTitle = 'Taskly'
