@@ -10,8 +10,8 @@ export default function NowDate() {
 
   return (
     <div className='flex flex-col items-center justify-center py-8 font-geistMono'>
-      <h2 className=''>{day}</h2>
-      <p className='text-[10px] text-gray-500'>{formattedDate}</p>
+      <h2 className='lg:text-lg'>{day}</h2>
+      <p className='text-[10px] text-gray-500 lg:text-xs'>{formattedDate}</p>
     </div>
   )
 }
