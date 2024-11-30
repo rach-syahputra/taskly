@@ -1,7 +1,6 @@
 import { Metadata } from 'next'
 import Date from '../components/date'
 import TodoList from '../components/todo-list'
-import AddTodoButton from '@/components/add-todo-button'
 import Navbar from '@/components/navbar'
 import { appTitle } from '@/constants/app'
 
@@ -16,7 +15,6 @@ export default function Home() {
       <Navbar />
       <Date />
       <TodoList />
-      <AddTodoButton />
     </main>
   )
 }
