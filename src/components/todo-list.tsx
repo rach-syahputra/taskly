@@ -7,16 +7,18 @@ import { getLocalStorage, setLocalStorage } from '@/hooks/local-storage'
 import { todos as todoList } from '@/constants/todos'
 
 export default function TodoList() {
-  const [todos, setTodos] = useState<string[] | null>(todoList)
+  const [todos, setTodos] = useState<string[] | null>([])
   const [onAdd, setOnAdd] = useState<boolean>(false)
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
-      const todos: string[] | null = getLocalStorage('todoist-todos')
+      const todosFromLocalStorage: string[] | null =
+        getLocalStorage('todoist-todos')
 
-      if (todos) {
-        setTodos(todos)
+      if (todosFromLocalStorage) {
+        setTodos(todosFromLocalStorage)
       } else {
+        setTodos(todoList)
         setLocalStorage('todoist-todos', todoList)
       }
     }
