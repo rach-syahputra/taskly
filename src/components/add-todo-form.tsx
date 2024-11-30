@@ -4,6 +4,7 @@ import { setLocalStorage } from '@/hooks/local-storage'
 import { toast } from '@/hooks/use-toast'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
+import { todosKey } from '@/constants/todos'
 
 export default function AddTodoForm({
   onAdd,
@@ -25,10 +26,10 @@ export default function AddTodoForm({
       setOnAdd(!onAdd)
 
       if (todos === null) {
-        setLocalStorage('todoist-todos', [todo])
+        setLocalStorage(todosKey, [todo])
         setTodos([todo])
       } else {
-        setLocalStorage('todoist-todos', [...todos, todo])
+        setLocalStorage(todosKey, [...todos, todo])
         setTodos([...todos, todo])
       }
 

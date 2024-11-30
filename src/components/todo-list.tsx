@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import AddTodoForm from './add-todo-form'
 import TodoItem from './todo-item'
 import { getLocalStorage, setLocalStorage } from '@/hooks/local-storage'
-import { todos as todoList } from '@/constants/todos'
+import { todos as todoList, todosKey } from '@/constants/todos'
 
 export default function TodoList() {
   const [todos, setTodos] = useState<string[] | null>([])
@@ -12,14 +12,13 @@ export default function TodoList() {
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
-      const todosFromLocalStorage: string[] | null =
-        getLocalStorage('todoist-todos')
+      const todosFromLocalStorage: string[] | null = getLocalStorage(todosKey)
 
       if (todosFromLocalStorage) {
         setTodos(todosFromLocalStorage)
       } else {
         setTodos(todoList)
-        setLocalStorage('todoist-todos', todoList)
+        setLocalStorage(todosKey, todoList)
       }
     }
   }, [])

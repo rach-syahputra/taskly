@@ -1,12 +1,13 @@
 import { Trash } from 'lucide-react'
 import { Checkbox } from '@/components/ui/checkbox'
 import { getLocalStorage, setLocalStorage } from '@/hooks/local-storage'
+import { todosKey } from '@/constants/todos'
 
 export default function TodoItem({ todo }: { todo: string }) {
   const removeTodo = () => {
     const todos: string[] | null = getLocalStorage('todoist-todos')
-    const newTodos = todos?.filter((item) => item !== todo)
-    setLocalStorage('todoist-todos', newTodos)
+    const filteredTodos = todos?.filter((item) => item !== todo)
+    setLocalStorage(todosKey, filteredTodos)
 
     location.reload()
   }

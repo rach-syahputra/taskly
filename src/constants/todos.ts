@@ -3,3 +3,5 @@ export const todos: string[] = [
   'Write a documentation',
   'Look for a website design'
 ]
+
+export const todosKey = 'taskly-todos'
