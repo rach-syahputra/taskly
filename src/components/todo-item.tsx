@@ -5,7 +5,7 @@ import { todosKey } from '@/constants/todos'
 
 export default function TodoItem({ todo }: { todo: string }) {
   const removeTodo = () => {
-    const todos: string[] | null = getLocalStorage('todoist-todos')
+    const todos: string[] | null = getLocalStorage(todosKey)
     const filteredTodos = todos?.filter((item) => item !== todo)
     setLocalStorage(todosKey, filteredTodos)
 

@@ -23,7 +23,17 @@ export default function AddTodoForm({
     event.preventDefault()
 
     if (todo) {
-      setOnAdd(!onAdd)
+      if (todos?.find((item) => item === todo)) {
+        toast({
+          title: 'Something went wrong',
+          description: 'The task already exists.',
+          variant: 'destructive'
+        })
+
+        return
+      }
+
+      setOnAdd(false)
 
       if (todos === null) {
         setLocalStorage(todosKey, [todo])
