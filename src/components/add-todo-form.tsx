@@ -32,7 +32,8 @@ export default function AddTodoForm() {
 
       const newTodo: ITodo = {
         id: Date.now().toString(),
-        task: todo
+        task: todo,
+        complete: false
       }
 
       if (todos === null) {

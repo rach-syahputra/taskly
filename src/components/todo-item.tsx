@@ -5,21 +5,30 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { getLocalStorage, setLocalStorage } from '@/hooks/local-storage'
 import { ITodo, todosKey } from '@/constants/todos'
 import { useTask } from '@/context/task'
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Input } from './ui/input'
 import { cn } from '@/lib/utils'
 import { toast } from '@/hooks/use-toast'
 
-export default function TodoItem({ id, task }: ITodo) {
-  const [editedTodo, setEditedTodo] = useState<string>(task)
+export default function TodoItem({ id, task, complete }: ITodo) {
+  const [editedTask, setEditedTask] = useState<string>(task)
+  const [editedComplete, setEditedComplete] = useState<boolean>(complete)
   const { setTodos, onEdit, setOnEdit, onEditId, setOnEditId } = useTask()
 
   const onCancelEdit = () => {
     setOnEditId('')
-    setEditedTodo(task)
+    setEditedTask(task)
   }
 
-  const handleEditTodo = (id: string) => {
+  useEffect(() => {
+    setTodos((prevTodos) =>
+      prevTodos!.map((todo) =>
+        todo && todo.id === id ? { ...todo, complete: editedComplete } : todo
+      )
+    )
+  }, [editedComplete])
+
+  const handleEditTask = (id: string) => {
     if (!onEdit) {
       setOnEdit(true)
       setOnEditId(id)
@@ -27,7 +36,7 @@ export default function TodoItem({ id, task }: ITodo) {
       if (onEditId === id) {
         setTodos((prevTodos) =>
           prevTodos!.map((todo) =>
-            todo && todo.id === id ? { ...todo, task: editedTodo } : todo
+            todo && todo.id === id ? { ...todo, task: editedTask } : todo
           )
         )
         setOnEdit(false)
@@ -53,14 +62,18 @@ export default function TodoItem({ id, task }: ITodo) {
 
   return (
     <div className='flex h-11 items-center justify-between gap-2'>
-      <Checkbox className='h-3 w-3' />
+      <Checkbox
+        className='h-3 w-3'
+        checked={complete}
+        onCheckedChange={() => setEditedComplete(!editedComplete)}
+      />
       {onEdit && onEditId === id ? (
         <form className='flex-1'>
           <Input
             type='text'
-            value={editedTodo}
+            value={editedTask}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-              setEditedTodo(event.target.value)
+              setEditedTask(event.target.value)
             }
             className='px-2 py-1 text-sm md:text-base'
           />
@@ -73,9 +86,9 @@ export default function TodoItem({ id, task }: ITodo) {
           <>
             <Save
               size={16}
-              onClick={() => handleEditTodo(id)}
+              onClick={() => handleEditTask(id)}
               className={cn('cursor-pointer', {
-                'opacity-60': task === editedTodo
+                'opacity-60': task === editedTask
               })}
             />
             <X size={16} onClick={onCancelEdit} className='cursor-pointer' />
@@ -84,7 +97,7 @@ export default function TodoItem({ id, task }: ITodo) {
           <>
             <SquarePen
               size={16}
-              onClick={() => handleEditTodo(id)}
+              onClick={() => handleEditTask(id)}
               className='cursor-pointer'
             />
             <Trash size={16} onClick={removeTodo} className='cursor-pointer' />

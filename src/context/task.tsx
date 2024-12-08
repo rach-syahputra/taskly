@@ -1,6 +1,6 @@
 'use client'
 
-import { todosKey } from '@/constants/todos'
+import { ITodo, todosKey } from '@/constants/todos'
 import { getLocalStorage, setLocalStorage } from '@/hooks/local-storage'
 import {
   createContext,
@@ -10,14 +10,11 @@ import {
   useState
 } from 'react'
 
-export interface ITodo {
-  id: string
-  task: string
-}
-
-export interface ITask {
+export interface ITodoContext {
   todos: ITodo[] | null
   setTodos: React.Dispatch<SetStateAction<ITodo[] | null>>
+  isLoading: boolean
+  setIsLoading: React.Dispatch<SetStateAction<boolean>>
   onAdd: boolean
   setOnAdd: React.Dispatch<SetStateAction<boolean>>
   onEdit: boolean
@@ -26,12 +23,13 @@ export interface ITask {
   setOnEditId: React.Dispatch<SetStateAction<string>>
 }
 
-const TaskContext = createContext<ITask | undefined>(undefined)
+const TaskContext = createContext<ITodoContext | undefined>(undefined)
 
 const TaskProvider: React.FC<{ children: React.ReactNode }> = ({
   children
 }) => {
   const [todos, setTodos] = useState<ITodo[] | null>([])
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const [onAdd, setOnAdd] = useState<boolean>(false)
   const [onEdit, setOnEdit] = useState<boolean>(false)
   const [onEditId, setOnEditId] = useState<string>('')
@@ -43,6 +41,8 @@ const TaskProvider: React.FC<{ children: React.ReactNode }> = ({
       if (todosFromLocalStorage) {
         setTodos(todosFromLocalStorage)
       }
+
+      setIsLoading(false)
     }
   }, [])
 
@@ -55,6 +55,8 @@ const TaskProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         todos,
         setTodos,
+        isLoading,
+        setIsLoading,
         onAdd,
         setOnAdd,
         onEdit,
@@ -68,7 +70,7 @@ const TaskProvider: React.FC<{ children: React.ReactNode }> = ({
   )
 }
 
-const useTask = (): ITask => {
+const useTask = (): ITodoContext => {
   const context = useContext(TaskContext)
   if (context === undefined) {
     throw new Error('useTask must be used within a TaskProvider')
