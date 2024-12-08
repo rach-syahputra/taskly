@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import { Check, Plus, X } from 'lucide-react'
 import { setLocalStorage } from '@/hooks/local-storage'
 import { toast } from '@/hooks/use-toast'
@@ -10,25 +10,20 @@ import { ITodo, todosKey } from '@/constants/todos'
 import BottomWrapper from './bottom-wrapper'
 import { useTask } from '@/context/task'
 
-export default function AddTodoForm() {
+interface EditTodoFormProps {
+  todos: ITodo[] | null
+  setTodos: Dispatch<SetStateAction<ITodo[] | null>>
+}
+
+export default function EditTodoForm({ todos, setTodos }: EditTodoFormProps) {
   const [todo, setTodo] = useState<string>('')
-  const inputRef = useRef<HTMLInputElement>(null)
-  const { todos, setTodos, onAdd, setOnAdd } = useTask()
-
-  useEffect(() => {
-    if (onAdd) inputRef.current?.focus()
-  }, [onAdd])
-
-  const onCancelAdd = () => {
-    setOnAdd(false)
-    setTodo('')
-  }
+  const { onEdit, setOnEdit } = useTask()
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     if (todo) {
-      setOnAdd(false)
+      setOnEdit(false)
 
       const newTodo: ITodo = {
         id: Date.now().toString(),
@@ -62,17 +57,16 @@ export default function AddTodoForm() {
             setTodo(e.currentTarget.value)
           }
           value={todo}
-          ref={inputRef}
-          className={`${onAdd ? 'block' : 'hidden'} h-10 p-2 text-sm`}
+          className={`${onEdit ? 'block' : 'hidden'} h-10 p-2 text-sm`}
         />
 
-        {onAdd && (
+        {onEdit && (
           <BottomWrapper>
             <Button
               variant='outline'
               size='icon'
               className='h-14 w-14 rounded-full p-0'
-              onClick={onCancelAdd}
+              onClick={() => setOnEdit(false)}
             >
               <X />
             </Button>
@@ -89,14 +83,14 @@ export default function AddTodoForm() {
         )}
       </form>
 
-      {!onAdd && (
+      {!onEdit && (
         <BottomWrapper>
           <Button
             variant='outline'
             size='icon'
             className='flex h-14 w-14 gap-4 rounded-full p-0 lg:[&_svg]:size-6'
             type='button'
-            onClick={() => setOnAdd(true)}
+            onClick={() => setOnEdit(true)}
           >
             <Plus />
           </Button>

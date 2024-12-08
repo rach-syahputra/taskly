@@ -6,7 +6,7 @@ export default function BottomWrapper({
   children: React.ReactNode
 }) {
   return (
-    <div className='fixed bottom-6 flex w-full justify-end pr-8 md:max-w-screen-md md:pr-0 lg:bottom-10'>
+    <div className='fixed bottom-6 flex w-full justify-end gap-4 pr-8 md:max-w-screen-md md:pr-0 lg:bottom-10'>
       {children}
     </div>
   )
