@@ -4,7 +4,8 @@ import { setLocalStorage } from '@/hooks/local-storage'
 import { toast } from '@/hooks/use-toast'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
-import { todosKey } from '@/constants/todos'
+import { ITodo, todosKey } from '@/constants/todos'
+import BottomWrapper from './bottom-wrapper'
 
 export default function AddTodoForm({
   onAdd,
@@ -14,8 +15,8 @@ export default function AddTodoForm({
 }: {
   onAdd: boolean
   setOnAdd: Dispatch<SetStateAction<boolean>>
-  todos: string[] | null
-  setTodos: Dispatch<SetStateAction<string[] | null>>
+  todos: ITodo[] | null
+  setTodos: Dispatch<SetStateAction<ITodo[] | null>>
 }) {
   const [todo, setTodo] = useState<string>('')
 
@@ -23,24 +24,19 @@ export default function AddTodoForm({
     event.preventDefault()
 
     if (todo) {
-      if (todos?.find((item) => item === todo)) {
-        toast({
-          title: 'Something went wrong',
-          description: 'The task already exists.',
-          variant: 'destructive'
-        })
-
-        return
-      }
-
       setOnAdd(false)
 
+      const newTodo: ITodo = {
+        id: Date.now().toString(),
+        task: todo
+      }
+
       if (todos === null) {
-        setLocalStorage(todosKey, [todo])
-        setTodos([todo])
+        setLocalStorage(todosKey, [newTodo])
+        setTodos([newTodo])
       } else {
-        setLocalStorage(todosKey, [...todos, todo])
-        setTodos([...todos, todo])
+        setLocalStorage(todosKey, [...todos, newTodo])
+        setTodos([...todos, newTodo])
       }
 
       setTodo('')
@@ -66,7 +62,7 @@ export default function AddTodoForm({
         />
 
         {onAdd && (
-          <div className='fixed bottom-5 right-5 flex gap-4 lg:bottom-10 lg:right-10'>
+          <BottomWrapper>
             <Button
               variant='outline'
               size='icon'
@@ -84,20 +80,22 @@ export default function AddTodoForm({
             >
               <Check />
             </Button>
-          </div>
+          </BottomWrapper>
         )}
       </form>
 
       {!onAdd && (
-        <Button
-          variant='outline'
-          size='icon'
-          className='fixed bottom-5 right-5 flex h-14 w-14 gap-4 rounded-full p-0 lg:bottom-10 lg:right-10 lg:[&_svg]:size-6'
-          type='button'
-          onClick={() => setOnAdd(true)}
-        >
-          <Plus />
-        </Button>
+        <BottomWrapper>
+          <Button
+            variant='outline'
+            size='icon'
+            className='flex h-14 w-14 gap-4 rounded-full p-0 lg:[&_svg]:size-6'
+            type='button'
+            onClick={() => setOnAdd(true)}
+          >
+            <Plus />
+          </Button>
+        </BottomWrapper>
       )}
     </>
   )
